@@ -1,5 +1,5 @@
 #Ignore everything in this directory
-!autom4te.cache/
-!aclocal.m4
-!src/*.o
+autom4te.cache/
+aclocal.m4
+src/*.o
 # Except this file
