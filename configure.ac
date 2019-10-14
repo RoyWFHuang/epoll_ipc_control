@@ -1,9 +1,11 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
+
+
 AC_PREREQ([2.69])
 AC_INIT(epollings, 0.1, aa@bb.cc)
-AM_INIT_AUTOMAKE 
+AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([inc/epolling.h])
 #AC_CONFIG_HEADERS([config.h])
 
@@ -24,6 +26,9 @@ AC_TYPE_UINT64_T
 
 # Checks for library functions.
 AC_CHECK_FUNCS([memset socket])
+
+# Checks for config.mkdir
+#AM_CONDITIONAL(CONFIG_MK_EXIST, [test "./config.mk" -eq 1])
 
 AC_CONFIG_FILES([Makefile
                  src/Makefile])

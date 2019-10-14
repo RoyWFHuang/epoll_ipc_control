@@ -10,11 +10,11 @@
 
 
 
-bool setupTimer(
+int8_t setupTimer(
 	uint64_t seconds_uint64,
-	uint64_t milliseconds_uint64, 
-	bool continious_bool, 
-	deviceEventHandler  eventhandler_callback, 
+	uint64_t milliseconds_uint64,
+	int8_t continious_bool,
+	deviceEventHandler  eventhandler_callback,
 	void * eventhandler_data_pvoid)
 {
 	struct itimerspec its_struct;
@@ -22,41 +22,41 @@ bool setupTimer(
 	if(timer_fd_int == -1)
 	{
 		PRINT_ERR("defineDeviceEvent error(timer_fd_int = %d)\n",timer_fd_int);
-		return false;
+		return FALSE;
 	}
-	
+
 	char desc_achar[] = "Timer";
-	int index_int = defineDeviceEvent(timer_fd_int, 
+	int index_int = defineDeviceEvent(timer_fd_int,
 					EVENT_TYPE_TIMER,
-					eventhandler_data_pvoid,	
-					eventhandler_callback, 
+					eventhandler_data_pvoid,
+					eventhandler_callback,
 					desc_achar);
 	if(index_int <0)
 	{
 		PRINT_ERR("defineDeviceEvent error(index_int = %d)\n",index_int);
-		return false;
+		return FALSE;
 	}
-		
-	 
+
+
 	its_struct.it_value.tv_sec = seconds_uint64;
 	its_struct.it_value.tv_nsec = milliseconds_uint64 ;
 	its_struct.it_interval.tv_sec = continious_bool ? its_struct.it_value.tv_sec : 0;
 	its_struct.it_interval.tv_nsec = continious_bool ? its_struct.it_value.tv_nsec : 0;
-	if (timerfd_settime(timer_fd_int, 0, &its_struct, NULL) == 0) 
+	if (timerfd_settime(timer_fd_int, 0, &its_struct, NULL) == 0)
 	{
-		
+
 		if(epollAddEvent(index_int,EPOLLIN))
 		{
 //			PRINT_DBG("add event\n");
-			return true;
+			return TRUE;
 		}
-			
+
 	}
-	
+
 	PRINT_ERR("Error setting timer\n");
-	
+
 	close(timer_fd_int);
-	return false;
+	return FALSE;
 }
 
 void timer_data_handler

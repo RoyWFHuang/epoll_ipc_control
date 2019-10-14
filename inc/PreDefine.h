@@ -3,14 +3,17 @@
 
 #include <stdio.h>
 
-
+enum {
+	FALSE,
+	TRUE,
+};
 
 
 extern FILE *logfile_pfile;
 #ifdef LogMsg
 #define PRINT_OUTFILE logfile_pfile
 #else
-#define PRINT_OUTFILE stderr
+#define PRINT_OUTFILE stdout
 #endif
 
 
